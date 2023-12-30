@@ -44,10 +44,13 @@ while True:
                 wait = WebDriverWait(driver, 5)
             #     elements = driver.find_elements(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[2]/div/div/div/div/div/a[4]/span/span/span[1]')
             # if len(elements) > 0:
-                element = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[2]/div/div/div/div/div/a[4]/span/span/span[1]')))
-                element.click()
+                element1 = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[2]/div/div/div/div/div/a[4]/span/span/span[1]')))
+                element1.click()
                 logging.debug("Delete button found")
-                driver.find_elements(By.XPATH, '/html/body/div[24]/div[4]/div/div/a[2]/span/span/span[2]') #click yes dialog box
+                element2 = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[20]/div[4]/div/div/a[2]/span/span')))# wait for yes dialog box
+                element2.click()
+                logging.debug("Recording deleted")
+                #driver.find_elements(By.XPATH, '/html/body/div[20]/div[4]/div/div/a[2]/span/span') #click yes dialog box
             except NoSuchElementException:
                 logging.debug("Delete button not found, returning to search results")
                 driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2]').click() #click back to search results
