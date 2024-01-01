@@ -31,6 +31,8 @@ driver.find_element(By.ID, "password").send_keys(password)  # use By.ID
 driver.find_element(By.CLASS_NAME, "loginButtonLabel").click()
 
 # Run until no recordings found
+
+
 while True:
     try:
         # Try to find the element
