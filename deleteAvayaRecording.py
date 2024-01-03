@@ -46,7 +46,6 @@ while True:
         else:
             time.sleep(3)
             driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[2]/div[4]/div/div/div[2]/div/div/div/div/div[2]/div/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div[6]/div/div').click()
-            #driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[2]/div/div/div/div/div/a[4]/span/span/span[1]').click()
             for attempt in range(max_attempts):
                 try:
                     wait = WebDriverWait(driver, 1)
@@ -54,31 +53,33 @@ while True:
                     time.sleep(4)
                     element1.click()
                     logging.info("Delete button found")
-                    #element2 = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[20]/div[4]/div/div/a[2]/span/span')))# click for yes dialog box
                     try:
                         element2 = driver.find_element(By.XPATH, '/html/body/div[22]/div[4]/div/div/a[2]/span/span/span[2]')
                         element2.click()
                     except NoSuchElementException:
                         driver.find_element(By.XPATH, '/html/body/div[20]/div[4]/div/div/a[2]/span/span/span[2]').click() #click yes dialog box rest of times
-                        #element2.click()
                     deleted_count += 1  # Increment counter
                     logging.info(f"Recording deleted {deleted_count}")
-                    #driver.find_elements(By.XPATH, '/html/body/div[20]/div[4]/div/div/a[2]/span/span') #click yes dialog box
                     break
                 except TimeoutException:
-                    logging.error("Timeout while waiting for the element to be clickable, attempt: %s", attempt + 1)
+                    logging.error("Timeout while waiting for the delete button to be clickable, attempt: %s", attempt + 1)
                     if attempt + 1 == max_attempts:
                         raise  # If this was the last attempt, re-raise the exception
                     end_time = time.time()  # Capture end time
                     running_time = end_time - start_time  # Calculate running time
                     logging.info(f"Total recordings deleted: {deleted_count}, Total running time: {running_time} seconds (Time out)")
+                    break
                 except NoSuchElementException:
                     logging.info("Delete button not found, returning to search results")
                     driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2]').click() #click back to search results
+                    end_time = time.time()  # Capture end time
+                    running_time = end_time - start_time  # Calculate running time
+                    logging.info(f"Total recordings deleted: {deleted_count}, Total running time: {running_time} seconds (Time out)")
                     break
     except NoSuchElementException:
-        # If the element is not found, wait for a second and then continue the loop
-        break
+        # If the expansion button is not found, try return to search results
+        logging.info("Expasion button not found, returning to search results")
+        driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2]').click() #click back to search results
 end_time = time.time()  # Capture end time
 running_time = end_time - start_time  # Calculate running time
 logging.info(f"Total recordings deleted: {deleted_count}, Total running time: {running_time} seconds (end)")
