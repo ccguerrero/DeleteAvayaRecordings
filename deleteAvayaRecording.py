@@ -13,6 +13,7 @@ password = "W9W9Kv£E*M7mt}7~"
 attempt = 0  # Initialize the attempt variable
 max_attempts = 3  # Define the maximum number of attempts
 deleted_count = 0  # Initialize counter
+start_time = time.time()  # Capture start time
 
 logging.basicConfig(filename='deleteAvayaRecording.log', level=logging.INFO, format='%(asctime)s %(message)s')
 
@@ -25,7 +26,7 @@ driver.implicitly_wait(10)
 
 # Login to Avaya
 # Use the url for the required search parameters to delete recordings
-driver.get("https://wfo-app.glb.nar.fusion.avayacloud.com/wfo/ui/#wsm%5Bws%5D=qm_SearchResultsWorkspace&navparent%5BworkspaceId%5D=qm_SearchWorkspace&qm_ctx%5Bts%5D=1704231992664")
+driver.get("https://wfo-app.glb.nar.fusion.avayacloud.com/wfo/ui/#wsm%5Bws%5D=qm_SearchResultsWorkspace&navparent%5BworkspaceId%5D=qm_SearchWorkspace&qm_ctx%5Bts%5D=1704316546335")
 driver.find_element(By.ID, "username").send_keys(username)  # use By.ID
 driver.find_element(By.CLASS_NAME, "loginButtonLabel").click()
 logging.info("Username entered")
@@ -68,7 +69,9 @@ while True:
                     logging.error("Timeout while waiting for the element to be clickable, attempt: %s", attempt + 1)
                     if attempt + 1 == max_attempts:
                         raise  # If this was the last attempt, re-raise the exception
-                    logging.info(f"Total recordings deleted: {deleted_count} (Time out)")
+                    end_time = time.time()  # Capture end time
+                    running_time = end_time - start_time  # Calculate running time
+                    logging.info(f"Total recordings deleted: {deleted_count}, Total running time: {running_time} seconds (Time out)")
                 except NoSuchElementException:
                     logging.info("Delete button not found, returning to search results")
                     driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2]').click() #click back to search results
@@ -76,4 +79,6 @@ while True:
     except NoSuchElementException:
         # If the element is not found, wait for a second and then continue the loop
         break
-logging.info(f"Total recordings deleted: {deleted_count} (end)")
+end_time = time.time()  # Capture end time
+running_time = end_time - start_time  # Calculate running time
+logging.info(f"Total recordings deleted: {deleted_count}, Total running time: {running_time} seconds (end)")
