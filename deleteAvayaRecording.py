@@ -22,7 +22,7 @@ options = Options()
 options.add_argument("user-data-dir=C:\\Users\\cguer\\AppData\\Local\\Google\\Chrome\\User Data\\Default")
 # Set up the driver to use the chrome browser default user to keep cookies
 driver = webdriver.Chrome(options=options)
-driver.implicitly_wait(10)
+driver.implicitly_wait(5)
 
 # Login to Avaya
 # Use the url for the required search parameters to delete recordings
@@ -48,10 +48,12 @@ while True:
         else:
             time.sleep(2)
             driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[2]/div[4]/div/div/div[2]/div/div/div/div/div[2]/div/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div[6]/div/div').click()
-            for attempt in range(max_attempts):
+            for attempt in range(max_attempts):                
                 try:
+                    wait1 = WebDriverWait(driver, 2)
                     # Click the first element
-                    driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[2]/div/div/div/div/div/a[4]/span/span/span[1]').click()
+                    element1 = wait1.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[2]/div/div/div/div/div/a[4]/span/span/span[1]')))
+                    element1.click()
                     try:
                         # Try to click the first of the two elements
                         driver.find_element(By.XPATH, '/html/body/div[22]/div[4]/div/div/a[2]/span/span/span[2]').click()
@@ -68,19 +70,27 @@ while True:
                             driver.find_element(By.XPATH, '/html/body/div[21]/div[4]/div/div/a[2]/span/span/span[2]').click()
                             logging.info("Recording deleted")
                             break
+                        except TimeoutException:
+                            logging.error("Timeout while waiting for the delete button to be clickable, attempt: %s", attempt + 1)
+                            if attempt + 1 == max_attempts:
+                                raise  # If this was the last attempt, re-raise the exception so that the script fails
                 except NoSuchElementException:
                     # If neither element is found, return to search results
                     logging.error("Delete button not found, returning to search results")
                     driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2]').click()
                     break
                 except TimeoutException:
+                    # If the expansion button is not found, try return to search results
+                    logging.info("Expasion button not found, returning to search results")
+                    driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2]').click() #click back to search results
+                    # break
                     logging.error("Timeout while waiting for the delete button to be clickable, attempt: %s", attempt + 1)
                     if attempt + 1 == max_attempts:
-                        raise  # If this was the last attempt, re-raise the exception so that the script fails          
+                       raise  # If this was the last attempt, re-raise the exception so that the script fails          
     except NoSuchElementException:
         # If the expansion button is not found, try return to search results
         logging.info("Expasion button not found, returning to search results")
-        driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2]').click() #click back to search results
+        #driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2]').click() #click back to search results
 end_time = time.time()  # Capture end time
 running_time = end_time - start_time  # Calculate running time
 logging.info(f"Total recordings deleted: {deleted_count}, Total running time: {running_time} seconds (end)")
