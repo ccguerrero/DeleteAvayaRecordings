@@ -26,7 +26,7 @@ driver.implicitly_wait(5)
 
 # Login to Avaya
 # Use the url for the required search parameters to delete recordings
-driver.get("https://wfo-app.glb.nar.fusion.avayacloud.com/wfo/ui/#wsm%5Bws%5D=qm_SearchResultsWorkspace&navparent%5BworkspaceId%5D=qm_SearchWorkspace&qm_ctx%5Bts%5D=1705640819247")
+driver.get("https://wfo-app.glb.nar.fusion.avayacloud.com/wfo/ui/#wsm%5Bws%5D=qm_SearchResultsWorkspace&navparent%5BworkspaceId%5D=qm_SearchWorkspace&qm_ctx%5Bts%5D=1705712622147")
 driver.find_element(By.ID, "username").send_keys(username)  # use By.ID
 driver.find_element(By.CLASS_NAME, "loginButtonLabel").click()
 logging.info("Username entered")
@@ -62,12 +62,12 @@ while True:
                     except NoSuchElementException:
                         try:
                             # If the first element is not found, try to click the second element
-                            driver.find_element(By.XPATH, '/html/body/div[20]/div[4]/div/div/a[2]/span/span').click()
+                            driver.find_element(By.XPATH, '/html/body/div[20]/div[4]/div/div/a[2]/span/span | /html/body/div[21]/div[4]/div/div/a[2]/span/span/span[2] | /html/body/div[22]/div[4]/div/div/a[2]/span/span/span[2] | /html/body/div[23]/div[4]/div/div/a[2]/span/span/span[2]').click()
                             logging.info("Recording deleted")
                             break
                         except NoSuchElementException:
                             # If the second element is not found, try to click the third element
-                            driver.find_element(By.XPATH, '/html/body/div[21]/div[4]/div/div/a[2]/span/span/span[2]').click()
+                            driver.find_element(By.XPATH, '/html/body/div[23]/div[4]/div/div/a[2]/span/span/span[2]').click()
                             logging.info("Recording deleted")
                             break
                         except TimeoutException:
