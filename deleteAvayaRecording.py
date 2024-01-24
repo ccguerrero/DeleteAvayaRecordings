@@ -65,7 +65,7 @@ while True:
             break
         else:
             # If recordings are found, click expansion button
-            time.sleep(2)
+            time.sleep(3)
             driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[2]/div[4]/div/div/div[2]/div/div/div/div/div[2]/div/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div[6]/div/div').click()
             for attempt in range(max_attempts):                
                 try:
@@ -77,7 +77,8 @@ while True:
                     driver.find_element(By.XPATH, '/html/body/div[20]/div[4]/div/div/a[2]/span/span | /html/body/div[21]/div[4]/div/div/a[2]/span/span/span[2] | /html/body/div[22]/div[4]/div/div/a[2]/span/span/span[2] | /html/body/div[23]/div[4]/div/div/a[2]/span/span/span[2]').click()
                     #Increment counter
                     deleted_count += 1
-                    logging.info(f"Recording deleted, count: {deleted_count}")
+                    minutes, seconds = divmod(time.time() - start_time, 60)
+                    logging.info(f"Recording deleted, count: {deleted_count}, elapsed time: {minutes} minutes {seconds:.1f} seconds")
                     print(f"Recording deleted, count: {deleted_count}")
                     break
                 except NoSuchElementException:
