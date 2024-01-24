@@ -75,7 +75,10 @@ while True:
                     element1.click()
                     # Confirm delete
                     driver.find_element(By.XPATH, '/html/body/div[20]/div[4]/div/div/a[2]/span/span | /html/body/div[21]/div[4]/div/div/a[2]/span/span/span[2] | /html/body/div[22]/div[4]/div/div/a[2]/span/span/span[2] | /html/body/div[23]/div[4]/div/div/a[2]/span/span/span[2]').click()
-                    logging.info("Recording deleted")
+                    #Increment counter
+                    deleted_count += 1
+                    logging.info(f"Recording deleted, count: {deleted_count}")
+                    print(f"Recording deleted, count: {deleted_count}")
                     break
                 except NoSuchElementException:
                     # If delete button element is not found, return to search results
@@ -84,7 +87,7 @@ while True:
                     break
                 except TimeoutException:
                     # If the expansion button is not found, try return to search results
-                    logging.info("Expasion button not found, returning to search results")
+                    logging.info("Expasion button not found, returning to search results (Timeout))")
                     driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2]').click() #click back to search results
                     # break
                     logging.error("Timeout while waiting for the element button to be clickable, attempt: %s", attempt + 1)
@@ -92,9 +95,10 @@ while True:
                        raise  # If this was the last attempt, re-raise the exception so that the script fails          
     except NoSuchElementException:
         # If the expansion button is not found, try return to search results
-        logging.info("Expasion button not found, returning to search results")
+        logging.info("Expasion button not found, returning to search results (No Such Element)")
         
 # ToDo: print the number of recordings deleted and time taken        
 end_time = time.time()  # Capture end time
 running_time = end_time - start_time  # Calculate running time
 logging.info(f"Total recordings deleted: {deleted_count}, Total running time: {running_time} seconds (end)")
+print(f"Total recordings deleted: {deleted_count}, Total running time: {running_time} seconds (end)")
