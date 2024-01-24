@@ -80,12 +80,12 @@ while True:
                 except NoSuchElementException:
                     # If delete button element is not found, return to search results
                     logging.error("Delete button not found, returning to search results")
-                    driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2]').click()
+                    driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2] | /html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a/span/span/span[2]').click()
                     break
                 except TimeoutException:
                     # If the expansion button is not found, try return to search results
                     logging.info("Expasion button not found, returning to search results")
-                    driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2] | /html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a/span/span/span[2]').click() #click back to search results
+                    driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2]').click() #click back to search results
                     # break
                     logging.error("Timeout while waiting for the element button to be clickable, attempt: %s", attempt + 1)
                     if attempt + 1 == max_attempts:
