@@ -45,7 +45,7 @@ driver.implicitly_wait(5)
 
 # Login to Avaya
 # Enter the url for the required search parameters to delete recordings
-driver.get("https://wfo-app.glb.nar.fusion.avayacloud.com/wfo/ui/#wsm%5Bws%5D=qm_SearchResultsWorkspace&navparent%5BworkspaceId%5D=qm_SearchWorkspace&qm_ctx%5Bts%5D=1706043649694")
+driver.get("https://wfo-app.glb.nar.fusion.avayacloud.com/wfo/ui/#wsm%5Bws%5D=qm_SearchResultsWorkspace&navparent%5BworkspaceId%5D=qm_SearchWorkspace&qm_ctx%5Bts%5D=1706633018618")
 
 # Enter the username and password to access Avaya cloud site
 driver.find_element(By.ID, "username").send_keys(username)  # use By.ID
@@ -89,7 +89,7 @@ while True:
                 except TimeoutException:
                     # If the expansion button is not found, try return to search results
                     logging.info("Expasion button not found, returning to search results (Timeout))")
-                    driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2]').click() #click back to search results
+                    driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a[2]/span/span/span[2] | /html/body/div[1]/div/div/div/div/div[2]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/a/span/span/span[2]').click() #click back to search results
                     # break
                     logging.error("Timeout while waiting for the element button to be clickable, attempt: %s", attempt + 1)
                     if attempt + 1 == max_attempts:
@@ -101,5 +101,6 @@ while True:
 # ToDo: print the number of recordings deleted and time taken        
 end_time = time.time()  # Capture end time
 running_time = end_time - start_time  # Calculate running time
-logging.info(f"Total recordings deleted: {deleted_count}, Total running time: {running_time} seconds (end)")
-print(f"Total recordings deleted: {deleted_count}, Total running time: {running_time} seconds (end)")
+fminutes, fseconds = divmod(running_time, 60)
+logging.info(f"Total recordings deleted: {deleted_count}, Total running time: {fminutes} minutes {fseconds:.1f} seconds")
+print(f"Total recordings deleted: {deleted_count}, Total running time: {fminutes} minutes {fseconds:.1f} seconds")
