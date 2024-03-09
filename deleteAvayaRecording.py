@@ -25,8 +25,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
 # Enter the username and password to access Avaya cloud site
-username = "FMEX000011"
-password = "W9W9Kv£E*M7mt}7~"
+username = "username"
+password = "password"
 
 attempt = 0  # Initialize the attempt variable
 max_attempts = 3  # Define the maximum number of attempts
@@ -45,7 +45,7 @@ driver.implicitly_wait(5)
 
 # Login to Avaya
 # Enter the url for the required search parameters to delete recordings
-driver.get("https://wfo-app.glb.nar.fusion.avayacloud.com/wfo/ui/#wsm%5Bws%5D=qm_SearchResultsWorkspace&navparent%5BworkspaceId%5D=qm_SearchWorkspace&qm_ctx%5Bts%5D=1706633018618")
+driver.get("https://wfo-app.glb.nar.company.avayacloud.com/wfo/ui/#wsm%5Bws%5D=qm_SearchResultsWorkspace&navparent%5BworkspaceId%5D=qm_SearchWorkspace&qm_ctx%5Bts%5D=1706633018618")
 
 # Enter the username and password to access Avaya cloud site
 driver.find_element(By.ID, "username").send_keys(username)  # use By.ID
